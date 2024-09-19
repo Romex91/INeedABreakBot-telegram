@@ -102,7 +102,7 @@ bot.command('help', (ctx) => {
 "Давайте сделаем перерыв 2ч"
 
 *Supported phrases:*
-${breakPhrases.join(', ')}
+${breakPhrases.join('\n')}
 
 *Duration units:* s/с (seconds), m/м (minutes), h/ч (hours), d/д (days)
 Max duration: 4 days

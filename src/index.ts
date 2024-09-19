@@ -102,7 +102,7 @@ const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд])
 // Add this after the breakRegex definition and before the bot.hears(breakRegex, ...) handler
 bot.command('help', (ctx) => {
   const helpMessage = `
-*INeedABreakBot Usage Examples:*
+*Usage Examples:*
 
 "I need a break 10m"
 "Let's take a break 1h"
@@ -110,7 +110,7 @@ bot.command('help', (ctx) => {
 "Давайте сделаем перерыв 2ч"
 
 *Supported phrases:*
-${breakPhrases.join(', ')}
+${breakPhrases.join('\n')}
 
 *Duration units:* s/с (seconds), m/м (minutes), h/ч (hours), d/д (days)
 Max duration: 4 days
