@@ -106,6 +106,12 @@ bot.hears(breakRegex, async (ctx) => {
     return;
   }
 
+  // Check if duration is longer than 4 days
+  if (durationSeconds > 4 * 86400) {
+    await ctx.reply('I apologize, but breaks longer than 4 are not supported to avoid permabans by mistake. Please specify a shorter duration.');
+    return;
+  }
+
   // Get list of all members in the chat
   const chatId = ctx.chat?.id;
   const chat = await ctx.getChat();
