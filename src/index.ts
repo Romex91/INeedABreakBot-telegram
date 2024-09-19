@@ -84,14 +84,21 @@ const breakPhrases = [
   'давайте сделаем перерыв',
   'время для перерыва',
   'перерыв',
+  'пауза',
   'пауза пожалуйста',
   'можем ли мы сделать паузу'
 ];
 
-const breakRegex = new RegExp(`(${breakPhrases.join('|')}) (\\d+[smhdсмчд])`, 'i');
+const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд]))?`, 'i');
 
 bot.hears(breakRegex, async (ctx) => {
-  const durationInput = ctx.match?.[2];
+  const durationInput = ctx.match?.[3];
+  
+  if (!durationInput) {
+    await ctx.reply('To initiate a break specify a duration. Use s/с, m/м, h/ч, or d/д (e.g., "I need a break 10m" or "Мне нужен перерыв 10м" for 10 minutes).');
+    return;
+  }
+
   const durationSeconds = parseDuration(durationInput);
 
   if (durationSeconds === null) {
@@ -114,7 +121,7 @@ bot.hears(breakRegex, async (ctx) => {
 
     await ctx.setChatPermissions(onBreakPermissions);
 
-    ctx.reply(`Chat has been muted for ${durationInput} as requested by ${ctx.from?.first_name}.`);
+    ctx.reply(`Гаф Гаф! Группа всё, можете отдыхать!\nChat has been muted for ${durationInput}.`);
 
     setTimeout(async () => {
       await ctx.setChatPermissions(defaultPermissions);
