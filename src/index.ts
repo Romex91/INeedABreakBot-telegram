@@ -74,8 +74,18 @@ const onBreakPermissions = {
 const breakPhrases = [
   'i need a break',
   'i need a pause',
+  'let\'s take a break',
+  'time for a break',
+  'break time',
+  'pause please',
+  'can we pause',
   'мне нужна пауза',
-  'мне нужен перерыв'
+  'мне нужен перерыв',
+  'давайте сделаем перерыв',
+  'время для перерыва',
+  'перерыв',
+  'пауза пожалуйста',
+  'можем ли мы сделать паузу'
 ];
 
 const breakRegex = new RegExp(`(${breakPhrases.join('|')}) (\\d+[smhdсмчд])`, 'i');
