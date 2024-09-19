@@ -10,21 +10,25 @@ const bot = new Telegraf(BOT_TOKEN);
 
 // Helper function to parse duration
 function parseDuration(input: string): number | null {
-  const regex = /(\d+)([smhd])/;
+  const regex = /(\d+)([smhd смчд])/i;
   const match = regex.exec(input);
   if (!match) return null;
 
   const value = parseInt(match[1], 10);
-  const unit = match[2];
+  const unit = match[2].toLowerCase();
 
   switch (unit) {
     case 's':
+    case 'с':
       return value;
     case 'm':
+    case 'м':
       return value * 60;
     case 'h':
+    case 'ч':
       return value * 3600;
     case 'd':
+    case 'д':
       return value * 86400;
     default:
       return null;
@@ -67,9 +71,17 @@ const onBreakPermissions = {
   can_manage_topics: false
 };
 
-bot.hears(/I need a break (\d+[smhd])/, async (ctx) => {
-  // console.log('I need a break', ctx);
-  const durationInput = ctx.match?.[1];
+const breakPhrases = [
+  'i need a break',
+  'i need a pause',
+  'мне нужна пауза',
+  'мне нужен перерыв'
+];
+
+const breakRegex = new RegExp(`(${breakPhrases.join('|')}) (\\d+[smhdсмчд])`, 'i');
+
+bot.hears(breakRegex, async (ctx) => {
+  const durationInput = ctx.match?.[2];
   const durationSeconds = parseDuration(durationInput);
 
   if (durationSeconds === null) {
