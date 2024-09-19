@@ -86,10 +86,38 @@ const breakPhrases = [
   'перерыв',
   'пауза',
   'пауза пожалуйста',
-  'можем ли мы сделать паузу'
+  'можем ли мы сделать паузу',
+  'fuck this',
+  'xватит',
+  'заебало',
+  'break',
+  'pause',
+  'silence',
+  'тишина',
+  'тихо',
 ];
 
 const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд]))?`, 'i');
+
+// Add this after the breakRegex definition and before the bot.hears(breakRegex, ...) handler
+bot.command('help', (ctx) => {
+  const helpMessage = `
+*INeedABreakBot Usage Examples:*
+
+"I need a break 10m"
+"Let's take a break 1h"
+"Мне нужен перерыв 30м"
+"Давайте сделаем перерыв 2ч"
+
+*Supported phrases:*
+${breakPhrases.join(', ')}
+
+*Duration units:* s/с (seconds), m/м (minutes), h/ч (hours), d/д (days)
+Max duration: 4 days
+`;
+
+  ctx.replyWithMarkdown(helpMessage);
+});
 
 bot.hears(breakRegex, async (ctx) => {
   const durationInput = ctx.match?.[3];
@@ -108,7 +136,7 @@ bot.hears(breakRegex, async (ctx) => {
 
   // Check if duration is longer than 4 days
   if (durationSeconds > 4 * 86400) {
-    await ctx.reply('I apologize, but breaks longer than 4 are not supported to avoid permabans by mistake. Please specify a shorter duration.');
+    await ctx.reply('Гаф! I apologize, but breaks longer than 4 are not supported to avoid permabans by mistake. Please specify a shorter duration.');
     return;
   }
 

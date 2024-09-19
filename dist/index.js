@@ -78,10 +78,37 @@ const breakPhrases = [
     'давайте сделаем перерыв',
     'время для перерыва',
     'перерыв',
+    'пауза',
     'пауза пожалуйста',
-    'можем ли мы сделать паузу'
+    'можем ли мы сделать паузу',
+    'fuck this',
+    'xватит',
+    'заебало',
+    'break',
+    'pause',
+    'silence',
+    'тишина',
+    'тихо',
 ];
 const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд]))?`, 'i');
+// Add this after the breakRegex definition and before the bot.hears(breakRegex, ...) handler
+bot.command('help', (ctx) => {
+    const helpMessage = `
+*INeedABreakBot Usage Examples:*
+
+"I need a break 10m"
+"Let's take a break 1h"
+"Мне нужен перерыв 30м"
+"Давайте сделаем перерыв 2ч"
+
+*Supported phrases:*
+${breakPhrases.join(', ')}
+
+*Duration units:* s/с (seconds), m/м (minutes), h/ч (hours), d/д (days)
+Max duration: 4 days
+`;
+    ctx.replyWithMarkdown(helpMessage);
+});
 bot.hears(breakRegex, async (ctx) => {
     var _a, _b;
     const durationInput = (_a = ctx.match) === null || _a === void 0 ? void 0 : _a[3];
@@ -92,6 +119,11 @@ bot.hears(breakRegex, async (ctx) => {
     const durationSeconds = parseDuration(durationInput);
     if (durationSeconds === null) {
         await ctx.reply('Invalid duration format. Use s, m, h, or d (e.g., 10m for 10 minutes).');
+        return;
+    }
+    // Check if duration is longer than 4 days
+    if (durationSeconds > 4 * 86400) {
+        await ctx.reply('Гаф! I apologize, but breaks longer than 4 are not supported to avoid permabans by mistake. Please specify a shorter duration.');
         return;
     }
     // Get list of all members in the chat
