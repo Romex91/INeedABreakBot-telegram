@@ -79,22 +79,14 @@ const breakPhrases = [
     'время для перерыва',
     'перерыв',
     'пауза',
+    'паузу',
     'пауза пожалуйста',
-    'можем ли мы сделать паузу',
-    'fuck this',
-    'xватит',
-    'заебало',
-    'break',
-    'pause',
-    'silence',
-    'тишина',
-    'тихо',
 ];
 const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд]))?`, 'i');
 // Add this after the breakRegex definition and before the bot.hears(breakRegex, ...) handler
 bot.command('help', (ctx) => {
     const helpMessage = `
-*INeedABreakBot Usage Examples:*
+*Usage Examples:*
 
 "I need a break 10m"
 "Let's take a break 1h"
