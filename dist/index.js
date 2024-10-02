@@ -8,12 +8,12 @@ if (!BOT_TOKEN) {
 const bot = new telegraf_1.Telegraf(BOT_TOKEN);
 // Helper function to parse duration
 function parseDuration(input) {
-    const regex = /(\d+)([smhd смчд])/i;
+    const regex = /(\d+)\s*([smhd смчд])/i;
     const match = regex.exec(input);
     if (!match)
         return null;
     const value = parseInt(match[1], 10);
-    const unit = match[2].toLowerCase();
+    const unit = match[2].toLowerCase().trim();
     switch (unit) {
         case 's':
         case 'с':
@@ -82,15 +82,15 @@ const breakPhrases = [
     'паузу',
     'пауза пожалуйста',
 ];
-const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+[smhdсмчд]))?`, 'i');
+const breakRegex = new RegExp(`(${breakPhrases.join('|')})( (\\d+\\s*[smhdсмчд]))?`, 'i');
 // Add this after the breakRegex definition and before the bot.hears(breakRegex, ...) handler
 bot.command('help', (ctx) => {
     const helpMessage = `
 *Usage Examples:*
 
 "I need a break 10m"
-"Let's take a break 1h"
-"Мне нужен перерыв 30м"
+"Let's take a break 1 h"
+"Мне нужен перерыв 30 м"
 "Давайте сделаем перерыв 2ч"
 
 *Supported phrases:*
@@ -98,6 +98,7 @@ ${breakPhrases.join('\n')}
 
 *Duration units:* s/с (seconds), m/м (minutes), h/ч (hours), d/д (days)
 Max duration: 4 days
+You can use spaces between the number and unit (e.g., "1 m" or "2 h")
 `;
     ctx.replyWithMarkdown(helpMessage);
 });
